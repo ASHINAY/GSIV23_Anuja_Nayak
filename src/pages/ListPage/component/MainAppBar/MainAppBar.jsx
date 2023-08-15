@@ -7,6 +7,8 @@ import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import HomeIcon from '@mui/icons-material/Home';
+import { useNavigate } from 'react-router-dom';
+import { Typography } from '@mui/material';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -23,6 +25,7 @@ const Search = styled('div')(({ theme }) => ({
     width: 'auto',
   },
 }));
+
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 2),
@@ -48,21 +51,31 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function MainAppBar() {
-
+export default function MainAppBar({ page }) {
+  const navigate = useNavigate();
+  const navigateToHomePage = () => {
+    navigate("/")
+  }
+  console.log(page);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" style={{ backgroundColor: '#AC69B0' }}>
         <Toolbar>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search>
+          {
+            page === "ListPage" ?
+              <div><Search>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  placeholder="Search…"
+                  inputProps={{ 'aria-label': 'search' }}
+                />
+              </Search>
+              </div>
+              :
+              <Typography>MovieList</Typography>
+          }
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
 
@@ -72,7 +85,7 @@ export default function MainAppBar() {
               color="inherit"
             >
 
-              <HomeIcon />
+              <HomeIcon onClick={navigateToHomePage} />
 
             </IconButton>
 
