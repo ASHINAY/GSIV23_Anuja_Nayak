@@ -2,7 +2,7 @@
   "name": "gsiv23-anuja-nayak",
   "version": "0.1.0",
   "homepage": "https://ashinay.github.io/GSIV23_Anuja_Nayak",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
