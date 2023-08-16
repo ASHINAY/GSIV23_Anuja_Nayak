@@ -11,8 +11,7 @@ import { CurrentSearchInput } from "../../reduxStore/movieDataSlice";
 function ListPage() {
   const searchInput = useSelector(CurrentSearchInput);
   const [movieDataList, setMovieDataList] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-const itemsPerPage = 10; 
+ 
   // const [searchInput, setSearchInput] = useState("");
   const apiKey = "53c420d41ba82d2810f5cff158cbc501";
   const url = `https://api.themoviedb.org/3/movie/upcoming?api_key=${apiKey}`;
@@ -21,30 +20,9 @@ const itemsPerPage = 10;
   const navigateToDetailsPage = (item) => {
     navigate("/DetailsPage", { state: { itemdetails: item } });
   };
-  const startIndex = (currentPage - 1) * itemsPerPage;
-const endIndex = startIndex + itemsPerPage;
-const displayedItems = movieDataList.slice(startIndex, endIndex);
-const totalPages = Math.ceil(movieDataList.length / itemsPerPage);
+  
 
-const handlePageChange = (newPage) => {
-  setCurrentPage(newPage);
-};
 
-const renderPaginationControls = () => {
-  const paginationControls = [];
-  for (let page = 1; page <= totalPages; page++) {
-    paginationControls.push(
-      <button
-        key={page}
-        onClick={() => handlePageChange(page)}
-        className={currentPage === page ? "active" : ""}
-      >
-        {page}
-      </button>
-    );
-  }
-  return paginationControls;
-};
   const getMovieData = () => {
     axios
       .get(url)
@@ -91,7 +69,7 @@ const renderPaginationControls = () => {
         }}
       >
         {movieDataList &&
-          displayedItems.map((item, index) => (
+          movieDataList.map((item, index) => (
             <Card
               onClick={() => navigateToDetailsPage(item)}
               key={index}
