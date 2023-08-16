@@ -9,6 +9,9 @@ import SearchIcon from "@mui/icons-material/Search";
 import HomeIcon from "@mui/icons-material/Home";
 import { useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
+import { useSelector, useDispatch } from "react-redux";
+import { CurrentSearchInput } from "../../../../reduxStore/movieDataSlice";
+import { changeSearchInput } from "../../../../reduxStore/movieDataSlice";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -48,9 +51,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function MainAppBar({ page, searchInput, setSearchInput }) {
+export default function MainAppBar({ page, setSearchInput }) {
+  const dispatch = useDispatch();
+  const searchInput = useSelector(CurrentSearchInput);
   const handlesearchChange = (event) => {
-    setSearchInput(event.target.value);
+    // setSearchInput(event.target.value);
+    dispatch(changeSearchInput(event.target.value));
   };
   const navigate = useNavigate();
   const navigateToHomePage = () => {

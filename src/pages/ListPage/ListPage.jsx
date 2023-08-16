@@ -5,10 +5,13 @@ import MainAppBar from "./component/MainAppBar/MainAppBar";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { CurrentSearchInput } from "../../reduxStore/movieDataSlice";
 
 function ListPage() {
+  const searchInput = useSelector(CurrentSearchInput);
   const [movieDataList, setMovieDataList] = useState([]);
-  const [searchInput, setSearchInput] = useState("");
+  // const [searchInput, setSearchInput] = useState("");
   const apiKey = "53c420d41ba82d2810f5cff158cbc501";
   const url = `https://api.themoviedb.org/3/movie/upcoming?api_key=${apiKey}`;
   const imageBaseUrl = "https://image.tmdb.org/t/p/w200"; // Use the width 'w200' for the images
@@ -50,11 +53,7 @@ function ListPage() {
   return (
     <div style={{ backgroundColor: "#e3cde5", height: "100vh" }}>
       <div>
-        <MainAppBar
-          page={"ListPage"}
-          searchInput={searchInput}
-          setSearchInput={setSearchInput}
-        />
+        <MainAppBar page={"ListPage"} />
       </div>
       <div
         style={{
