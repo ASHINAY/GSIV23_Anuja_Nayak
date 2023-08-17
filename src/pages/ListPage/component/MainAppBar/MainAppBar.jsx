@@ -41,7 +41,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
     width: "100%",
@@ -54,8 +53,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function MainAppBar({ page, setSearchInput }) {
   const dispatch = useDispatch();
   const searchInput = useSelector(CurrentSearchInput);
-  const handlesearchChange = (event) => {
-    // setSearchInput(event.target.value);
+  const handleSearchChange = (event) => {
     dispatch(changeSearchInput(event.target.value));
   };
   const navigate = useNavigate();
@@ -76,7 +74,7 @@ export default function MainAppBar({ page, setSearchInput }) {
                 <StyledInputBase
                   placeholder="Search…"
                   inputProps={{ "aria-label": "search" }}
-                  onChange={handlesearchChange}
+                  onChange={handleSearchChange}
                   value={searchInput}
                 />
               </Search>
@@ -85,13 +83,14 @@ export default function MainAppBar({ page, setSearchInput }) {
             <Typography>MovieList</Typography>
           )}
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          <Box sx={{ display: "flex" }}>
             <IconButton
               size="large"
-              aria-label="show 17 new notifications"
+              aria-label="home"
               color="inherit"
+              onClick={navigateToHomePage}
             >
-              <HomeIcon onClick={navigateToHomePage} />
+              <HomeIcon />
             </IconButton>
           </Box>
         </Toolbar>

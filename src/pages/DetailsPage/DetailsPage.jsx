@@ -2,7 +2,7 @@ import { Typography } from "@mui/material";
 import React from "react";
 import { useLocation } from "react-router-dom";
 import MainAppBar from "../ListPage/component/MainAppBar/MainAppBar";
-import "./DetailsPage.css";
+
 
 function DetailsPage() {
    const location = useLocation();

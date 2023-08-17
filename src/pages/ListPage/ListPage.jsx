@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import "./ListPage.css";
 import axios from "axios";
 import MainAppBar from "./component/MainAppBar/MainAppBar";
 import Card from "@mui/material/Card";
@@ -11,40 +10,41 @@ import { CurrentSearchInput } from "../../reduxStore/movieDataSlice";
 function ListPage() {
   const searchInput = useSelector(CurrentSearchInput);
   const [movieDataList, setMovieDataList] = useState([]);
- 
-  // const [searchInput, setSearchInput] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
   const apiKey = "53c420d41ba82d2810f5cff158cbc501";
   const url = `https://api.themoviedb.org/3/movie/upcoming?api_key=${apiKey}`;
-  const imageBaseUrl = "https://image.tmdb.org/t/p/w200"; // Use the width 'w200' for the images
+  const imageBaseUrl = "https://image.tmdb.org/t/p/w200";
   const navigate = useNavigate();
+
   const navigateToDetailsPage = (item) => {
     navigate("/DetailsPage", { state: { itemdetails: item } });
   };
-  
 
-
-  const getMovieData = () => {
+  const getMovieData = (page = 1) => {
     axios
-      .get(url)
+      .get(`${url}&page=${page}`)
       .then((response) => {
         setMovieDataList(response.data.results);
+        setCurrentPage(response.data.page);
+        setTotalPages(response.data.total_pages);
       })
       .catch((error) => {});
   };
+
   const getSearchResults = () => {
-    console.log("getting called");
     let searchUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${searchInput}`;
     axios
       .get(searchUrl)
       .then((response) => {
-        console.log(response.data.results);
         setMovieDataList(response.data.results);
+        setCurrentPage(1);
+        setTotalPages(1);
       })
       .catch((error) => {});
   };
-  useEffect(() => {
-    getMovieData();
-  }, []);
+
   useEffect(() => {
     if (searchInput === "") {
       getMovieData();
@@ -145,8 +145,34 @@ function ListPage() {
             </Card>
           ))}
       </div>
+      <div style={{ display: "flex", justifyContent: "center", paddingTop: "20px",paddingBottom:"20px",backgroundColor:"#e3cde5" }}>
+        <button
+          onClick={() => {
+            if (currentPage > 1) {
+              getMovieData(currentPage - 1);
+            }
+          }}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+        <p style={{ margin: "0 20px" }}>
+          Page {currentPage} of {totalPages}
+        </p>
+        <button
+          onClick={() => {
+            if (currentPage < totalPages) {
+              getMovieData(currentPage + 1);
+            }
+          }}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 }
 
 export default ListPage;
+
