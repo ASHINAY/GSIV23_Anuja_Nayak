@@ -5,8 +5,8 @@ import MainAppBar from "../ListPage/component/MainAppBar/MainAppBar";
 import "./DetailsPage.css";
 
 function DetailsPage() {
-  const location = useLocation();
-  const { state: { itemdetails } = {} } = location;
+   const location = useLocation();
+   const { state: { itemdetails } = {} } = location;
   const imageBaseUrl = "https://image.tmdb.org/t/p/w200";
 
   const getYear = (release_date) => {
