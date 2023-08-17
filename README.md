@@ -24,7 +24,7 @@ To run and test the application, follow these steps:
 
 ## Deployment
 
-The app is deployed using GitHub Pages and can be accessed here: [Live Demo](https://ASHINAY.github.io/GSIV23_Anuja_Nayak/)
+The app is deployed using GitHub Pages and can be accessed here: [Live Demo](https://gsiv-23-anuja-nayak.vercel.app/)
 
 
 ## Feedback
