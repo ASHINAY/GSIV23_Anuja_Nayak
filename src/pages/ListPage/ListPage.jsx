@@ -4,19 +4,25 @@ import MainAppBar from "./component/MainAppBar/MainAppBar";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { CurrentSearchInput } from "../../reduxStore/movieDataSlice";
+import { CurrentMovieList } from "../../reduxStore/movieDataSlice";
+import { changeMovieList } from "../../reduxStore/movieDataSlice";
 
 function ListPage() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const searchInput = useSelector(CurrentSearchInput);
-  const [movieDataList, setMovieDataList] = useState([]);
+  const movieList = useSelector(CurrentMovieList);
+
+  // const [movieDataList, setMovieDataList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
   const apiKey = "53c420d41ba82d2810f5cff158cbc501";
   const url = `https://api.themoviedb.org/3/movie/upcoming?api_key=${apiKey}`;
   const imageBaseUrl = "https://image.tmdb.org/t/p/w200";
-  const navigate = useNavigate();
 
   const navigateToDetailsPage = (item) => {
     navigate("/DetailsPage", { state: { itemdetails: item } });
@@ -26,7 +32,8 @@ function ListPage() {
     axios
       .get(`${url}&page=${page}`)
       .then((response) => {
-        setMovieDataList(response.data.results);
+        dispatch(changeMovieList(response.data.results));
+        // setMovieList(response.data.results);
         setCurrentPage(response.data.page);
         setTotalPages(response.data.total_pages);
       })
@@ -35,10 +42,11 @@ function ListPage() {
 
   const getSearchResults = () => {
     let searchUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${searchInput}`;
+
     axios
       .get(searchUrl)
       .then((response) => {
-        setMovieDataList(response.data.results);
+        dispatch(changeMovieList(response.data.results));
         setCurrentPage(1);
         setTotalPages(1);
       })
@@ -68,8 +76,8 @@ function ListPage() {
           padding: "20px",
         }}
       >
-        {movieDataList &&
-          movieDataList.map((item, index) => (
+        {movieList &&
+          movieList.map((item, index) => (
             <Card
               onClick={() => navigateToDetailsPage(item)}
               key={index}
@@ -145,7 +153,15 @@ function ListPage() {
             </Card>
           ))}
       </div>
-      <div style={{ display: "flex", justifyContent: "center", paddingTop: "20px",paddingBottom:"20px",backgroundColor:"#e3cde5" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          paddingTop: "20px",
+          paddingBottom: "20px",
+          backgroundColor: "#e3cde5",
+        }}
+      >
         <button
           onClick={() => {
             if (currentPage > 1) {
@@ -175,4 +191,3 @@ function ListPage() {
 }
 
 export default ListPage;
-
